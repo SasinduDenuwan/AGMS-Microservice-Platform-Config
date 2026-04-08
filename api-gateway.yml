@@ -6,26 +6,48 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka/
 
-cloud:
-  gateway:
-    server:
-      webflux:
-        default-filters:
-          - StripPrefix=1
-        routes:
-          - id: automation-service
-            uri: lb://automation-service
-            predicates:
-              - Path=/automation-service/**
-          - id: crop-service
-            uri: lb://crop-service
-            predicates:
-              - Path=/crop-service/**
-          - id: sensor-service
-            uri: lb://sensor-service
-            predicates:
-              - Path=/sensor-service/**
-          - id: zone-service
-            uri: lb://zone-service
-            predicates:
-              - Path=/zone-service/**
+spring:
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:5173"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+      server:
+        webflux:
+          default-filters:
+            - StripPrefix=1
+          routes:
+            - id: automation-service
+              uri: lb://automation-service
+              predicates:
+                - Path=/automation-service/**
+              filters:
+                - name: JwtAuthenticationFilter  
+
+            - id: crop-service
+              uri: lb://crop-service
+              predicates:
+                - Path=/crop-service/**
+              filters:
+                - name: JwtAuthenticationFilter  
+
+            - id: sensor-service
+              uri: lb://sensor-service
+              predicates:
+                - Path=/sensor-service/**
+              filters:
+                - name: JwtAuthenticationFilter  
+
+            - id: zone-service
+              uri: lb://zone-service
+              predicates:
+                - Path=/zone-service/**
+              filters:
+                - name: JwtAuthenticationFilter  
+
+
+jwt:
+  secret: "739ghfuguheffhff79fejbjbvjbvuhvvjbjbvhvihivhivnjvjbvhvihvivinvivi"
