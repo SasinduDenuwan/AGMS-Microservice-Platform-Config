@@ -1,0 +1,12 @@
+  # sensor-service.yml in your Git Repo
+server:
+  port: 8082
+
+eureka:
+  client:
+    service-url:
+      defaultZone: "http://localhost:8761/eureka"
+
+iot:
+  external-api: "http://104.211.95.241:8080/api/devices"
+  fetch-interval: 10
